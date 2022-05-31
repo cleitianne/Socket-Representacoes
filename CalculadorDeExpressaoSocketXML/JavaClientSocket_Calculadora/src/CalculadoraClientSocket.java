@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.NoTypePermission;
-import com.thoughtworks.xstream.security.NullPermission;
-import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 import Expressoes.CalculadorDeExpressao;
 import Expressoes.DadosConvertidosParaCalculoDaExpressao;
@@ -33,16 +28,19 @@ public class CalculadoraClientSocket {
                 Socket clientSocket = new Socket("localhost", 9090);
                 DataOutputStream socketSaidaServer = new DataOutputStream(clientSocket.getOutputStream());
                 
-                // Entrada de dados para a realização das operações
+                // Entrada de dados com a expressão matematica
                 System.out.println("Digite a expressao");
                 expressao = scanner.next();
-                dadosConvertidos = calculadora.converte(expressao);
-                representacaoXML = xstream.toXML(dadosConvertidos);
                 
-                System.out.println(representacaoXML + "\n\n");
+                //Representando a expressão em um estrutura de dados
+                dadosConvertidos = calculadora.converte(expressao);
+                
+                //Serializando o objeto complexo para XML
+                representacaoXML = xstream.toXML(dadosConvertidos);
                 
                 // Enviando os dados para o servidor
                 socketSaidaServer.writeBytes(representacaoXML + "\n");
+                //Sinaliza o FIM do xml para o server (Acordado entre cliente e servidor)
                 socketSaidaServer.writeBytes("FIM"+"\n");
                 socketSaidaServer.flush();
 

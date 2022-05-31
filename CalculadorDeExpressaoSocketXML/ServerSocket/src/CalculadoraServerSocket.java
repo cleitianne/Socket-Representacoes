@@ -5,13 +5,10 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
-
 import Expressoes.CalculadorDeExpressao;
 import Expressoes.DadosConvertidosParaCalculoDaExpressao;
 import Expressoes.Fila;
@@ -31,6 +28,7 @@ public class CalculadoraServerSocket {
         DadosConvertidosParaCalculoDaExpressao dadosConvertidos;
 		
 		XStream xstream = new XStream();
+		//Linhas para resolver problemas de permissão da api XStream
 		xstream.setMode(XStream.NO_REFERENCES);
 		xstream.addPermission(NoTypePermission.NONE);
 		xstream.addPermission(NullPermission.NULL);
@@ -61,6 +59,7 @@ public class CalculadoraServerSocket {
 				socketEntrada = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				
 				String linha = "";
+				//Ler o XML recebido do cliente
 				while(true){
 					linha = socketEntrada.readLine();
 					//LER linha a linha até encotrar o fim dos dados (Previamente acordado com o cliente)
@@ -70,9 +69,10 @@ public class CalculadoraServerSocket {
 				}
 
 				System.out.println(dadosXml);
+				//Deserializando o XML para o objeto complexo
 				dadosConvertidos = (DadosConvertidosParaCalculoDaExpressao)xstream.fromXML(dadosXml);
 				
-				
+				//Realizando o calculo da expressão 
 				result = String.valueOf(calculadora.calculaExp(dadosConvertidos));
 				
 
@@ -82,12 +82,9 @@ public class CalculadoraServerSocket {
 				System.out.println(result);
 				socketOutput.flush();
 				socketOutput.close();
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }
