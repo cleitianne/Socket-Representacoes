@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+C:\Users\Cliente\Desktop\Cleitianne\CalculadorDeExpressaoSocket\.metadata\.plugins\org.eclipse.jdt.core
+3869288724.index
+2206147698.index
+1865797976.index
+2210380589.index
+723484158.index
+3544736739.index
