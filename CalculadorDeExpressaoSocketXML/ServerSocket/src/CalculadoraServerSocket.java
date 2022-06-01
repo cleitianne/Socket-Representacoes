@@ -54,7 +54,7 @@ public class CalculadoraServerSocket {
 				Socket connectionSocket = welcomeSocket.accept();
 			
 				System.out.println("Nova conexão");
-
+				dadosXml = "";
 				// Interpretando dados do cliente
 				socketEntrada = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 				
